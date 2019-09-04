@@ -1,8 +1,8 @@
 import falcon
-import health
+from resources import HealthResource
 
 app = falcon.API()
-app.add_route("/health", health.Resource())
+app.add_route("/health", HealthResource())
 
 
 if __name__ == "__main__":
