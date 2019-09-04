@@ -1,3 +1,4 @@
 falcon
 cheroot
 prometheus_client
+python-json-logger
