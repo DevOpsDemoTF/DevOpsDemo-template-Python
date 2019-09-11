@@ -55,10 +55,11 @@ stages:
           testResultsFiles: 'api_tests/results/api-test-results.xml'
           testRunTitle: API tests
           failTaskOnFailedTests: true
-      - task: Docker@2
-        displayName: Push to Docker registry
-        inputs:
-          command: push
-          repository: $(name)
-          tags: |
-            $(tagname)
+      ## Do not push to registry by default
+      #- task: Docker@2
+      #  displayName: Push to Docker registry
+      #  inputs:
+      #    command: push
+      #    repository: $(name)
+      #    tags: |
+      #      $(tagname)
