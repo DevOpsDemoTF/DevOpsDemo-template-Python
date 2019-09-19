@@ -1,26 +1,23 @@
 import cheroot.wsgi
-import falcon
 
 from config import Configuration
-from metrics import init_metrics
-from resources import HealthResource
-
-
-def get_api(config: Configuration):
-    app = falcon.API()
-    app.add_route("/health", HealthResource(config))
-    return app
+from routes.routing import get_app
+import prometheus_client
 
 
 def main():
     config = Configuration()
     init_metrics()
 
-    config.logger.info("Service starting", extra=config.values)
+    config.log.info("Service has been started", extra=config.values)
 
-    app = get_api(config)
+    app = get_app(config)
     server = cheroot.wsgi.Server(("0.0.0.0", 8080), app)
     server.start()
+
+
+def init_metrics():
+    prometheus_client.start_http_server(9102)
 
 
 if __name__ == "__main__":

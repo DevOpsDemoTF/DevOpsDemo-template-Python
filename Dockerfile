@@ -10,21 +10,15 @@ WORKDIR /app
 COPY . /app/
 RUN /app/venv/bin/pip install -r dependencies.txt
 
-FROM alpine:3.10 as test
-RUN apk add --no-cache \
-      python3
-
-COPY --from=build /app /app
-WORKDIR /app
+FROM build as test
 
 RUN /app/venv/bin/pip install nose
 RUN /app/venv/bin/nosetests --with-xunit --xunit-file /app/test-results.xml tests/
 
 FROM alpine:3.10
-RUN mkdir /app && \
-    addgroup -S app && adduser -S app -G app && \
+RUN addgroup -S app && adduser -S app -G app && \
     apk add --no-cache \
-      python3
+    python3
 
 EXPOSE 8080
 EXPOSE 9102
