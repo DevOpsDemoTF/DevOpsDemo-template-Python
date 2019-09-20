@@ -18,7 +18,8 @@ RUN /app/venv/bin/nosetests --with-xunit --xunit-file /app/test-results.xml test
 FROM alpine:3.10
 RUN addgroup -S app && adduser -S app -G app && \
     apk add --no-cache \
-    python3
+    python3 \
+    dumb-init
 
 EXPOSE 8080
 EXPOSE 9102
@@ -30,4 +31,5 @@ COPY --from=test /app/test-results.xml /app/
 
 USER app
 WORKDIR /app
-CMD ["/app/venv/bin/python", "app.py"]
+ENTRYPOINT ["dumb-init", "/app/venv/bin/python"]
+CMD ["app.py"]
