@@ -35,6 +35,8 @@ test:
       cd api_tests
       docker-compose run tests || true
       docker-compose run --entrypoint /bin/cat app /app/test-results.xml > ../test-results.xml
+    - "xsltproc junit.xslt ../test-results.xml | tee - | grep \"Failures: 0, Errors: 0,\""
+    - "xsltproc junit.xslt results/api-test-results.xml | tee - | grep \"Failures: 0, Errors: 0,\""
   artifacts:
     reports:
       junit:
